@@ -22,7 +22,7 @@ public class Character {
 	private final String displayName;
 	private CharacterState state = CharacterState.IDLE;
 	private int hp;
-	private Point pos = new Point(0, 0);
+	private Point pos;
 	private boolean flipped = false;
 
 	/*
@@ -44,10 +44,11 @@ public class Character {
 	 * @param flyweightCharacter the Flyweight that this Character belongs to
 	 * @param displayName the display name for this Character
 	 */
-	public Character(FlyweightCharacter flyweightCharacter, String displayName) {
+	public Character(FlyweightCharacter flyweightCharacter, String displayName, Point pos) {
 		this.flyweight = flyweightCharacter;
 		this.displayName = displayName;
 		this.hp = flyweight.getMaxHp();
+		this.pos = pos;
 	}
 
 	/**
