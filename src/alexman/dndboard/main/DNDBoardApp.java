@@ -7,9 +7,10 @@ import java.io.Reader;
 
 import javax.swing.WindowConstants;
 
-import alexman.dndboard.entity.FlyweightFactory;
 import alexman.dndboard.gui.Application;
+import alexman.dndboard.model.AreaModel;
 import alexman.dndboard.model.CharacterModel;
+import alexman.dndboard.model.IAreaModel;
 import alexman.dndboard.model.ICharacterModel;
 
 /**
@@ -27,9 +28,15 @@ public class DNDBoardApp {
 			characterModel = new CharacterModel(characterReader);
 		}
 
-		FlyweightFactory ff = new FlyweightFactory(characterModel);
+		String areasJSONInputFile = "C:\\Users\\alexm\\projects\\Java\\DND-Board\\areas.json";
+		IAreaModel areaModel;
+		try (Reader areaReader = new FileReader(areasJSONInputFile)) {
+			areaModel = new AreaModel(areaReader);
+		}
 
-		Application aw = new Application(ff, null, 0, 0);
+		// FlyweightFactory ff = new FlyweightFactory(characterModel);
+
+		Application aw = new Application(characterModel, areaModel, null, 0, 0);
 		aw.setAutoRequestFocus(true);
 		aw.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		aw.setIconImage(null/* TODO */);

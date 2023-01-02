@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 
 import alexman.dndboard.entity.Character;
 import alexman.dndboard.entity.FlyweightCharacter;
-import alexman.dndboard.entity.FlyweightFactory;
 import alexman.dndboard.gui.grid.Grid;
+import alexman.dndboard.model.IAreaModel;
+import alexman.dndboard.model.ICharacterModel;
 
 /**
  * TODO
@@ -27,22 +28,21 @@ public class Application extends JFrame {
 
 	private final JPanel panel;
 
-	private final FlyweightFactory flyweightFactory;
-	private final Grid grid;
+	private final ICharacterModel characterModel;
+	private final IAreaModel areaModel;
+	private Area currentArea;
 
+	private final Map<String, CharacterGraphic> characterGraphicMap = new HashMap<>();
+
+	private final Grid grid;
 	private int gridX, gridY;
 
-	/**
-	 * TODO
-	 *
-	 * @param grid
-	 * @param gridX
-	 * @param gridY
-	 */
-	public Application(FlyweightFactory flyweightFactory, Grid grid, int gridX, int gridY) {
+	public Application(ICharacterModel characterModel, IAreaModel areaModel, Grid grid,
+	        int gridX, int gridY) {
 		super();
 		setLayout(null);
-		this.flyweightFactory = flyweightFactory;
+		this.characterModel = characterModel;
+		this.areaModel = areaModel;
 		this.grid = grid;
 		setGridX(gridX);
 		setGridY(gridY);
@@ -69,18 +69,16 @@ public class Application extends JFrame {
 	private void stupidSetup() {
 		FlyweightCharacter flyweightCharacter;
 		try {
-			flyweightCharacter = flyweightFactory.getFlyweight("dog");
+			flyweightCharacter = characterModel.readFlyweightFromCache("dog");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
 
-		Character character1 = new Character(flyweightCharacter, "aaa");
-		Character character2 = new Character(flyweightCharacter, "bbb");
-		character1.setPos(new Point(50, 50));
-		character2.setPos(new Point(150, 150));
-		panel.add(new CharacterGraphic(character1));
-		panel.add(new CharacterGraphic(character2));
+		Character character1 = new Character(flyweightCharacter, "aaa", new Point(50, 50));
+		Character character2 = new Character(flyweightCharacter, "bbb", new Point(150, 150));
+		addCharacter(character1);
+		addCharacter(character2);
 	}
 
 	/**

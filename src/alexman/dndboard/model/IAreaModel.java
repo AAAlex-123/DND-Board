@@ -7,7 +7,6 @@ import java.io.Writer;
 import org.json.JSONException;
 
 import alexman.dndboard.entity.Area;
-import alexman.dndboard.entity.FlyweightFactory;
 
 /**
  * TODO
@@ -53,7 +52,7 @@ public interface IAreaModel {
 	 *
 	 * @throws IOException
 	 */
-	Area loadAreaFromCache(String areaName, FlyweightFactory flyweightFactory) throws IOException;
+	Area loadAreaFromCache(String areaName, ICharacterModel characterModel) throws IOException;
 
 	/**
 	 * TODO

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.json.JSONArray;
@@ -23,6 +25,8 @@ import alexman.dndboard.entity.FlyweightCharacter;
 public class CharacterModel implements ICharacterModel {
 
 	private JSONObject allFlyweightCharactersObject;
+
+	private final Map<String, FlyweightCharacter> cache = new HashMap<>();
 
 	/**
 	 * TODO
@@ -53,6 +57,10 @@ public class CharacterModel implements ICharacterModel {
 	@Override
 	public FlyweightCharacter readFlyweightFromCache(String flyweightName) throws IOException {
 
+		if (cache.containsKey(flyweightName)) {
+			return cache.get(flyweightName);
+		}
+
 		JSONObject flyweightObject = allFlyweightCharactersObject.getJSONObject(flyweightName);
 
 		EnumMap<CharacterState, String> flyweightSpriteMap = new EnumMap<>(CharacterState.class);
@@ -74,7 +82,11 @@ public class CharacterModel implements ICharacterModel {
 
 		int flyweightMaxHp = flyweightObject.getInt("maxHp");
 
-		return new FlyweightCharacter(flyweightName, flyweightSpriteMap, flyweightMaxHp);
+		FlyweightCharacter flyweightCharacter = new FlyweightCharacter(flyweightName,
+		        flyweightSpriteMap, flyweightMaxHp);
+		cache.put(flyweightName, flyweightCharacter);
+
+		return flyweightCharacter;
 	}
 
 	@Override

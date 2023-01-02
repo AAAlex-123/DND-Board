@@ -1,5 +1,6 @@
 package alexman.dndboard.main;
 
+import java.awt.Point;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +10,6 @@ import java.io.Writer;
 import alexman.dndboard.entity.Area;
 import alexman.dndboard.entity.Character;
 import alexman.dndboard.entity.FlyweightCharacter;
-import alexman.dndboard.entity.FlyweightFactory;
 import alexman.dndboard.model.AreaModel;
 import alexman.dndboard.model.CharacterModel;
 import alexman.dndboard.model.IAreaModel;
@@ -27,10 +27,9 @@ public class Main {
 
 		Iterable<String> characterNames = characterModel.getCharacterNamesFromCache();
 
-		FlyweightFactory ff = new FlyweightFactory(characterModel);
-		FlyweightCharacter fc = ff.getFlyweight("conton");
+		FlyweightCharacter fc = characterModel.readFlyweightFromCache("conton");
 
-		Character c = new Character(fc, "cotton");
+		Character c = new Character(fc, "cotton", new Point());
 
 		// ---
 
@@ -49,7 +48,7 @@ public class Main {
 
 		Iterable<String> areaNames = areaModel.getAreaNamesFromCache();
 
-		Area church = areaModel.loadAreaFromCache("church", ff);
+		Area church = areaModel.loadAreaFromCache("church", characterModel);
 
 		// ---
 

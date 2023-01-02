@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +15,6 @@ import org.json.JSONTokener;
 import alexman.dndboard.entity.Area;
 import alexman.dndboard.entity.Character;
 import alexman.dndboard.entity.FlyweightCharacter;
-import alexman.dndboard.entity.FlyweightFactory;
 
 /**
  * TODO
@@ -24,6 +25,9 @@ import alexman.dndboard.entity.FlyweightFactory;
 public class AreaModel implements IAreaModel {
 
 	private JSONObject allAreasObject;
+
+	private final Map<String, Area> cache = new HashMap<>();
+	private final Map<String, Boolean> dirty = new HashMap<>();
 
 	/**
 	 * TODO
@@ -52,7 +56,12 @@ public class AreaModel implements IAreaModel {
 	}
 
 	@Override
-	public Area loadAreaFromCache(String areaName, FlyweightFactory flyweightFactory) throws IOException {
+	public Area loadAreaFromCache(String areaName, ICharacterModel characterModel)
+	        throws IOException {
+
+		if (cache.containsKey(areaName) && !dirty.get(areaName)) {
+			return cache.get(areaName);
+		}
 
 		JSONObject areaObject = allAreasObject.getJSONObject(areaName);
 		String areaBackgroundImageSprite = areaObject.getString("sprite");
@@ -64,16 +73,14 @@ public class AreaModel implements IAreaModel {
 			JSONObject characterObject = characterArray.getJSONObject(i);
 
 			String flyweightCharacterId = characterObject.getString("character");
-			FlyweightCharacter flyweightCharacter = flyweightFactory
-			        .getFlyweight(flyweightCharacterId);
+			FlyweightCharacter flyweightCharacter = characterModel
+			        .readFlyweightFromCache(flyweightCharacterId);
 
 			String characterDisplayName = characterObject.getString("display_name");
-			Character character = new Character(flyweightCharacter, characterDisplayName);
+			Point pos = new Point(characterObject.getInt("posX"), characterObject.getInt("posY"));
+			Character character = new Character(flyweightCharacter, characterDisplayName, pos);
 
 			character.setHp(characterObject.getInt("hp"));
-
-			Point pos = new Point(characterObject.getInt("posX"), characterObject.getInt("posY"));
-			character.setPos(pos);
 
 			character.setFlipped(characterObject.getBoolean("flipped"));
 			// ... set other dnd stuff ...
@@ -81,11 +88,19 @@ public class AreaModel implements IAreaModel {
 			loadedArea.addCharacter(character);
 		}
 
+		cache.put(areaName, loadedArea);
+		dirty.put(areaName, false);
+
 		return loadedArea;
 	}
 
 	@Override
 	public void saveAreaToCache(Area area) {
+
+		if (!cache.containsKey(area.getName())) {
+			throw new IllegalArgumentException(
+			        "Can't save Area " + area.getName() + " which does not exist");
+		}
 
 		JSONObject areaObject = new JSONObject();
 
@@ -108,5 +123,7 @@ public class AreaModel implements IAreaModel {
 		areaObject.put("characters", areaCharacterArray);
 
 		allAreasObject.put(area.getName(), areaObject);
+
+		dirty.put(area.getName(), true);
 	}
 }
