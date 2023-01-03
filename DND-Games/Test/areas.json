@@ -1,0 +1,82 @@
+{
+	"cafe": {
+		"sprite": "./assets/areas/cafe.png",
+		"characters": [
+			{
+				"character": "jawnny",
+				"display_name": "JAWnny",
+				"hp": 10,
+				"posX": 50,
+				"posY": 50,
+				"flipped": false,
+			}
+		]
+	},
+	"school": {
+		"sprite": "./assets/areas/school.png",
+		"characters": [
+			{
+				"character": "conton",
+				"display_name": "cotton",
+				"hp": 7,
+				"posX": 1,
+				"posY": 2,
+				"flipped": false,
+			},
+			{
+				"character": "virgil",
+				"display_name": "virgin",
+				"hp": 2,
+				"posX": 200,
+				"posY": 200,
+				"flipped": false,
+			},
+			{
+				"character": "jawnny",
+				"display_name": "not virgin",
+				"hp": 2,
+				"posX": 400,
+				"posY": 400,
+				"flipped": false,
+			},
+		],
+	},
+	
+	"church": {
+		"sprite": "./assets/areas/church.png",
+		"characters": [
+			{
+				"character": "dog",
+				"display_name": "azor",
+				"hp": 1,
+				"posX": 0,
+				"posY": 0,
+				"flipped": true,
+			},
+			{
+				"character": "water_elemental",
+				"display_name": "cooper",
+				"hp": 2,
+				"posX": 600,
+				"posY": 300,
+				"flipped": false,
+			},
+			{
+				"character": "conton",
+				"display_name": "aaaaaaaaaaaaaa",
+				"hp": 2,
+				"posX": 400,
+				"posY": 0,
+				"flipped": false,
+			},
+			{
+				"character": "virgil",
+				"display_name": "virgin",
+				"hp": 2,
+				"posX": 200,
+				"posY": 200,
+				"flipped": false,
+			},
+		],
+	}
+}

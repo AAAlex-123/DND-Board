@@ -1,0 +1,22 @@
+{
+    "dog": {
+        "maxHp": 2,
+        "sprites": [
+            {
+                "sprite": "./assets/characters/dog_idle.png",
+                "state": "IDLE"
+            },
+            {
+                "sprite": "./assets/characters/dog_dead.png",
+                "state": "DEAD"
+            }
+        ]
+    },
+    "conton": {
+        "maxHp": 10,
+        "sprites": [{
+            "sprite": "./assets/characters/conton_idle.png",
+            "state": "IDLE"
+        }]
+    }
+}

@@ -1,0 +1,59 @@
+{
+	"dog": {
+		"maxHp": 2,
+		"sprites": [
+			{
+				"state": "IDLE",
+				"sprite": "./assets/characters/dog_idle.png",
+			},
+			{
+				"state": "DEAD",
+				"sprite": "./assets/characters/dog_dead.png",
+			},
+		],
+	},
+	"conton": {
+		"maxHp": 10,
+		"sprites": [
+			{
+				"state": "IDLE",
+				"sprite": "./assets/characters/conton_idle.png",
+			},
+		],
+	},
+	"water_elemental": {
+		"maxHp": 10,
+		"sprites": [
+			{
+				"state": "IDLE",
+				"sprite": "./assets/characters/WATER_ELEMENTAL.png",
+			},
+		],
+	},
+	"virgil": {
+		"maxHp": 100,
+		"sprites": [
+			{
+				"state": "IDLE",
+				"sprite": "./assets/characters/virgil.png",
+			},
+			{
+				"state": "DOWN",
+				"sprite": "./assets/characters/virgil_requiem.png",
+			},
+			{
+				"state": "DEAD",
+				"sprite": "./assets/characters/virgil-dead.png",
+			},
+		]
+	},
+	"jawnny": {
+		"maxHp": 50,
+		"sprites": [
+			{
+				"state": "IDLE",
+				"sprite": "./assets/characters/jawnny.png",
+			},
+		]
+	}
+}

@@ -1,0 +1,34 @@
+{
+    "school": {
+        "characters": [{
+            "posX": 1,
+            "posY": 2,
+            "flipped": false,
+            "character": "conton",
+            "hp": 7,
+            "display_name": "cotton"
+        }],
+        "sprite": "./assets/areas/school.png"
+    },
+    "church": {
+        "characters": [
+            {
+                "posX": 10,
+                "posY": 7,
+                "flipped": true,
+                "character": "dog",
+                "hp": 1,
+                "display_name": "azor"
+            },
+            {
+                "posX": 5,
+                "posY": 3,
+                "flipped": false,
+                "character": "dog",
+                "hp": 2,
+                "display_name": "cooper"
+            }
+        ],
+        "sprite": "./assets/areas/church.png"
+    }
+}
