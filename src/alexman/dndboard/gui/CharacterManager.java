@@ -30,6 +30,10 @@ public class CharacterManager {
 		return new LinkedList<>(characterGraphicMap.values());
 	}
 
+	public Character getCharacter(String name) {
+		return characterGraphicMap.get(name).getCharacter();
+	}
+
 	public void addCharacter(Character character) {
 		// TODO: check
 		CharacterGraphic characterGraphic = new CharacterGraphic(character);

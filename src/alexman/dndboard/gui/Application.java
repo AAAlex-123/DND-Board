@@ -89,6 +89,7 @@ public class Application extends JFrame {
 		characterPanel.addContainerListener(new ContainerAdapter() {
 			@Override
 			public void componentAdded(ContainerEvent e) {
+				Application.this.recalculateZOrderForAllComponents();
 				e.getChild().addComponentListener(new ComponentAdapter() {
 					@Override
 					public void componentMoved(ComponentEvent e1) {
@@ -116,16 +117,34 @@ public class Application extends JFrame {
 		return characterManager.getCharacterNames();
 	}
 
-	private void addCharacter(Character character) {
+	private void addCharacterToCurrentArea(Character character) {
+		getCurrentArea().addCharacter(character);
+		addCharacterToScreen(character);
+		areaModel.saveAreaToCache(currentArea);
+	}
+
+	private void addCharacterToScreen(Character character) {
 		characterManager.addCharacter(character);
 	}
 
-	private void removeCharacter(String name) {
+	private void removeCharacterFromCurrentArea(String name) {
+		getCurrentArea().removeCharacter(characterManager.getCharacter(name));
+		removeCharacterFromScreen(name);
+		areaModel.saveAreaToCache(currentArea);
+	}
+
+	private void removeCharacterFromScreen(String name) {
 		characterManager.removeCharacter(name);
 	}
 
-	private void removeAllCharacters() {
+	private void removeAllCharactersFromScreen() {
 		characterManager.removeAllCharacters();
+	}
+
+	private void moveCharacterToArea(Character character, Area area) {
+		Area.move(getCurrentArea(), area, character);
+		removeCharacterFromScreen(character.getDisplayName());
+		areaModel.saveAreaToCache(area);
 	}
 
 	private void recalculateZOrderForAllComponents() {
@@ -265,11 +284,8 @@ public class Application extends JFrame {
 					e.printStackTrace();
 				}
 
-				context.removeAllCharacters();
-				context.getCurrentArea().getCharacters().forEach(c -> context.addCharacter(c));
-
-				reqs.clear();
-				context = null;
+				context.removeAllCharactersFromScreen();
+				context.getCurrentArea().getCharacters().forEach(context::addCharacterToScreen);
 			}
 
 			@Override
@@ -305,10 +321,7 @@ public class Application extends JFrame {
 
 				Character character = new Character(fc, name, pos);
 
-				context.addCharacter(character);
-
-				reqs.clear();
-				context = null;
+				context.addCharacterToCurrentArea(character);
 			}
 
 			@Override
@@ -337,10 +350,7 @@ public class Application extends JFrame {
 				}
 
 				String name = reqs.getValue("Name", String.class);
-				context.removeCharacter(name);
-
-				reqs.clear();
-				context = null;
+				context.removeCharacterFromCurrentArea(name);
 			}
 
 			@Override
@@ -363,16 +373,13 @@ public class Application extends JFrame {
 					return;
 				}
 
+				String characterName = reqs.getValue("Character", String.class);
+				Character character = context.characterManager.getCharacter(characterName);
+
 				String areaName = reqs.getValue("To Area", String.class);
 				Area areaTo = context.areaModel.loadAreaFromCache(areaName, context.characterModel);
-				CharacterGraphic cg = reqs.getValue("Character", CharacterGraphic.class);
 
-				Area.move(context.getCurrentArea(), areaTo, cg.getCharacter());
-
-				context.removeCharacter(cg.getCharacter().getDisplayName());
-
-				reqs.clear();
-				context = null;
+				context.moveCharacterToArea(character, areaTo);
 			}
 
 			@Override
@@ -388,9 +395,8 @@ public class Application extends JFrame {
 				toAreas.remove(context.getCurrentArea().getName());
 				((ListRequirement<String>) reqs.get("To Area")).setOptions(toAreas);
 
-				// TODO: add text with new reqs
-				((ListRequirement<CharacterGraphic>) reqs.get("Character"))
-				        .setOptions(context.getCharacterGraphics());
+				((ListRequirement<String>) reqs.get("Character"))
+				        .setOptions(context.getCharacterNames());
 			}
 		},
 
@@ -406,7 +412,7 @@ public class Application extends JFrame {
 
 		protected final void execute() {
 			if (context == null)
-				throw new NullPointerException(/* text */);
+				throw new NullPointerException("No conext set for Action");
 
 			try {
 				executeAction();
