@@ -49,6 +49,8 @@ public class Application extends JFrame {
 
 		panel = new JPanel();
 		this.setContentPane(panel);
+		JMenuBar menubar = new ApplicationMenu(this);
+		this.setJMenuBar(menubar);
 
 		panel.setLayout(null);
 		panel.addContainerListener(new ContainerAdapter() {

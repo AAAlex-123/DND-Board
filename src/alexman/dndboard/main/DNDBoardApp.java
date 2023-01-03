@@ -40,7 +40,6 @@ public class DNDBoardApp {
 		aw.setAutoRequestFocus(true);
 		aw.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		aw.setIconImage(null/* TODO */);
-		aw.setJMenuBar(null /* TODO */);
 		aw.setSize(800, 600);
 		aw.setTitle("DND Board");
 		aw.setVisible(true);
