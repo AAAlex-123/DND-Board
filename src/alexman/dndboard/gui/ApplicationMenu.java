@@ -20,8 +20,8 @@ class ApplicationMenu extends JMenuBar {
 	private final Application context;
 
 	private final JMenu m_file, m_area, m_character;
-	private final JMenuItem f_open, r_switch, c_add, c_remove, c_move;
-	private final Action a_open, a_switch, a_add, a_remove, a_move;
+	private final JMenuItem f_open, f_save, f_save_as, r_switch, c_add, c_remove, c_move;
+	private final Action a_open, a_save, a_save_as, a_switch, a_add, a_remove, a_move;
 
 	{
 		a_open = new AbstractAction() {
@@ -29,6 +29,20 @@ class ApplicationMenu extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				Application.Actions.OPEN.context(context).adjustRequirements();
 				Application.Actions.OPEN.execute();
+			}
+		};
+
+		a_save = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Application.Actions.SAVE.context(context).execute();
+			}
+		};
+
+		a_save_as = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Application.Actions.SAVE_AS.context(context).execute();
 			}
 		};
 
@@ -71,8 +85,12 @@ class ApplicationMenu extends JMenuBar {
 		// --- file ---
 		m_file = new JMenu("File");
 		f_open = new JMenuItem("Open");
+		f_save = new JMenuItem("Save");
+		f_save_as = new JMenuItem("Save As");
 
 		m_file.add(f_open);
+		m_file.add(f_save);
+		m_file.add(f_save_as);
 
 		add(m_file);
 
@@ -105,6 +123,8 @@ class ApplicationMenu extends JMenuBar {
 
 	private void listeners() {
 		f_open.addActionListener(a_open);
+		f_save.addActionListener(a_save);
+		f_save_as.addActionListener(a_save_as);
 		r_switch.addActionListener(a_switch);
 		c_add.addActionListener(a_add);
 		c_remove.addActionListener(a_remove);
@@ -119,6 +139,8 @@ class ApplicationMenu extends JMenuBar {
 
 	private void accelerators() {
 		f_open.setAccelerator(KeyStroke.getKeyStroke("control O"));
+		f_save.setAccelerator(KeyStroke.getKeyStroke("control S"));
+		f_save_as.setAccelerator(KeyStroke.getKeyStroke("control shift S"));
 		r_switch.setAccelerator(KeyStroke.getKeyStroke("control E"));
 		c_add.setAccelerator(KeyStroke.getKeyStroke("control A"));
 		c_remove.setAccelerator(KeyStroke.getKeyStroke("control D"));

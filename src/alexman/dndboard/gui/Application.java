@@ -9,8 +9,10 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -48,8 +50,8 @@ public class Application extends JFrame {
 	private final CharacterManager characterManager = new CharacterManager();
 	private ICharacterModel characterModel;
 	private IAreaModel areaModel;
+	private Path currentGameRoot;
 	private Area currentArea;
-
 
 	private final Grid grid;
 	private int gridX, gridY;
@@ -146,9 +148,11 @@ public class Application extends JFrame {
 				}
 
 				String gameDirectory = reqs.getValue("Game", String.class);
-				Path root = Path.of(System.getProperty("user.dir"), File.separator, "DND-Games");
-				Path areaPath = Path.of(root.toString(), gameDirectory, "areas.json");
-				Path characterPath = Path.of(root.toString(), gameDirectory, "characters.json");
+				Path gameRoot = Path.of(System.getProperty("user.dir"), File.separator, "DND-Games",
+				        gameDirectory);
+				context.currentGameRoot = gameRoot;
+				Path areaPath = Path.of(gameRoot.toString(), "areas.json");
+				Path characterPath = Path.of(gameRoot.toString(), "characters.json");
 
 				try (Reader reader = new FileReader(areaPath.toFile())) {
 					context.areaModel = new AreaModel(reader);
@@ -182,6 +186,62 @@ public class Application extends JFrame {
 				                .stream()
 				                .map(File::getName)
 				                .toList());
+			}
+		},
+
+		SAVE {
+			@Override
+			protected void executeAction() throws Exception {
+				context.areaModel.saveAreaToCache(context.currentArea);
+				Path gameRoot = context.currentGameRoot;
+
+				Path areaPath = Path.of(gameRoot.toString(), "areas.json");
+				Path characterPath = Path.of(gameRoot.toString(), "characters.json");
+
+				try (Writer writer = new FileWriter(areaPath.toFile())) {
+					context.areaModel.write(writer);
+				}
+
+				try (Writer writer = new FileWriter(characterPath.toFile())) {
+					context.characterModel.write(writer);
+				}
+			}
+		},
+
+		SAVE_AS {
+			@Override
+			protected void executeAction() throws Exception {
+				reqs.fulfillWithDialog(context, "Choose a Name for your Game");
+				if (!reqs.fulfilled()) {
+					return;
+				}
+
+				String gameName = reqs.getValue("Game Name", String.class);
+				Path gameRoot = Path.of(System.getProperty("user.dir"), File.separator, "DND-Games",
+				        gameName);
+
+				if (new File(gameRoot.toString()).isDirectory()) {
+					throw new IllegalArgumentException(
+					        "Game with name " + gameName + " already exists");
+				}
+
+				new File(gameRoot.toString()).mkdir();
+
+				Path areaPath = Path.of(gameRoot.toString(), "areas.json");
+				Path characterPath = Path.of(gameRoot.toString(), "characters.json");
+
+				try (Writer writer = new FileWriter(areaPath.toFile())) {
+					context.areaModel.write(writer);
+				}
+
+				try (Writer writer = new FileWriter(characterPath.toFile())) {
+					context.characterModel.write(writer);
+				}
+			}
+
+			@Override
+			public void constructRequirements() {
+				reqs.add("Game Name", StringType.NON_EMPTY);
 			}
 		},
 
