@@ -1,0 +1,89 @@
+{
+    "cafe": {
+        "characters": [
+            {
+                "posX": 200,
+                "posY": 200,
+                "flipped": false,
+                "character": "virgil",
+                "hp": 2,
+                "display_name": "virgin"
+            },
+            {
+                "posX": 50,
+                "posY": 50,
+                "flipped": false,
+                "character": "jawnny",
+                "hp": 10,
+                "display_name": "JAWnny"
+            },
+            {
+                "posX": 256,
+                "posY": 80,
+                "flipped": false,
+                "character": "water_elemental",
+                "hp": 10,
+                "display_name": "lmao"
+            }
+        ],
+        "sprite": "./assets/areas/cafe.png"
+    },
+    "school": {
+        "characters": [
+            {
+                "posX": 1,
+                "posY": 2,
+                "flipped": false,
+                "character": "conton",
+                "hp": 7,
+                "display_name": "cotton"
+            },
+            {
+                "posX": 200,
+                "posY": 200,
+                "flipped": false,
+                "character": "virgil",
+                "hp": 2,
+                "display_name": "virgin"
+            },
+            {
+                "posX": 400,
+                "posY": 400,
+                "flipped": false,
+                "character": "jawnny",
+                "hp": 2,
+                "display_name": "not virgin"
+            }
+        ],
+        "sprite": "./assets/areas/school.png"
+    },
+    "church": {
+        "characters": [
+            {
+                "posX": 250,
+                "posY": 116,
+                "flipped": false,
+                "character": "conton",
+                "hp": 2,
+                "display_name": "aaaaaaaaaaaaaa"
+            },
+            {
+                "posX": 600,
+                "posY": 300,
+                "flipped": false,
+                "character": "water_elemental",
+                "hp": 2,
+                "display_name": "cooper"
+            },
+            {
+                "posX": 0,
+                "posY": 0,
+                "flipped": true,
+                "character": "dog",
+                "hp": 1,
+                "display_name": "azor"
+            }
+        ],
+        "sprite": "./assets/areas/church.png"
+    }
+}
