@@ -7,5 +7,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/alexm/projects/Java/DND-Board/lib/json-20220924.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alexm/projects/Java/DND-Board/lib/requirement.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alexm/projects/Java/DND-Board/lib/undoable.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
