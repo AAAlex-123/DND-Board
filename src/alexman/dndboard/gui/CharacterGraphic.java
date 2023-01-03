@@ -24,11 +24,17 @@ public class CharacterGraphic extends JComponent {
 
 	public CharacterGraphic(Character character) {
 		this.character = character;
+
+		setLocation(character.getPos());
 		this.setSize(1, 1);
 
 		MyMouseAdapter mma = new MyMouseAdapter();
 		addMouseListener(mma);
 		addMouseMotionListener(mma);
+	}
+
+	public Character getCharacter() {
+		return character;
 	}
 
 	@Override
